@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stone } from '../../components';
+import { Stone } from '.';
 
 const style = {
     background: 'lightBlue',
@@ -10,11 +10,9 @@ const style = {
     justifyContent: 'spaceEvenly',
 };
 
-const Pool = ({ stones }) => {
+export const Pool = ({ stones }) => {
     return <div style={style}>
         {stones.map((stone) => (
             <Stone {...stone} />
         ))}</div>;
 }
-
-export default Pool;

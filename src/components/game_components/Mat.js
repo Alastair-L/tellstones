@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stone } from '../../components';
+import { Stone } from '.';
 
 const style = {
     background: 'blue',
@@ -13,11 +13,9 @@ const style = {
 };
 
 
-const Mat = ({ stones, placeStone }) => {
+export const Mat = ({ stones, placeStone }) => {
     return <div style={style} onClick={() => placeStone('left')}>
         {stones.map(stone => (
             <Stone {...stone} />
         ))}</div>;
 }
-
-export default Mat;

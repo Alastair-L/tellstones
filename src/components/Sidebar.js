@@ -6,8 +6,6 @@ const style = {
     //height: '74%',
 };
 
-const Sidebar = () => {
+export const Sidebar = () => {
     return <div style={style}>Sidebar</div>;
 }
-
-export default Sidebar;

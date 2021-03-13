@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Stone = ({ name, setActive, isActive, isHidden }) => (
+export const Stone = ({ name, setActive, isActive, isHidden }) => (
     <div style={{
         width: '100px',
         height: '100px',
@@ -16,5 +16,3 @@ const Stone = ({ name, setActive, isActive, isHidden }) => (
         }}>{isHidden ? '' : name}</p>
     </div>
 );
-
-export default Stone;

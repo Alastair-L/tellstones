@@ -6,10 +6,8 @@ const style = {
     gridArea: 'Actions',
 };
 
-const Actions = ({ possibleActions, setAction }) => {
+export const ActionsList = ({ possibleActions, setAction }) => {
     return <div style={style}>Actions: {possibleActions.map(name => (
         <button display={'block'} onClick={() => setAction(name)}> {name} </button>
     ))}</div >;
 }
-
-export default Actions;

@@ -1,7 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Game, Header, Sidebar, Footer } from './containers';
+import { Header, Sidebar, Footer } from './components';
+import { Game } from './containers';
 
 const contentStyle = {
   display: 'flex',

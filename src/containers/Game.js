@@ -1,10 +1,7 @@
 import { render } from '@testing-library/react';
 import React, { Component } from 'react';
 import { act } from 'react-dom/test-utils';
-import { Stone } from '../../components';
-import Actions from './Actions';
-import Mat from './Mat';
-import Pool from './Pool';
+import { ActionsList, Mat, Pool } from '../components';
 
 const style = {
     background: 'black',
@@ -135,7 +132,7 @@ class Game extends Component {
     }
 
     renderActions() {
-        return <Actions setAction={this.setAction} possibleActions={ACTIONS} />;
+        return <ActionsList setAction={this.setAction} possibleActions={ACTIONS} />;
     }
 
     render() {

@@ -6,8 +6,6 @@ const style = {
     height: 70,
 };
 
-const Header = () => {
+export const Header = () => {
     return <div style={style}>Header</div>;
 }
-
-export default Header;
