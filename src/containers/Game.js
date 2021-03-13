@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { act } from 'react-dom/test-utils';
 import { ActionsList, Mat, Pool } from '../components';
+import { ACTIONS, INITIAL_STONE_STATE, STONES } from '../constants';
 
 const style = {
     background: 'black',
@@ -16,133 +17,83 @@ const style = {
     `,
 };
 
-const startingStones = {
-    hammer: {
-        name: 'hammer',
-    },
-    oak: {
-        name: 'oak',
-    },
-    fish: {
-        name: 'fish',
-    },
-    chalice: {
-        name: 'chalice',
-    },
-    sword: {
-        name: 'sword',
-    },
-    helm: {
-        name: 'helm',
-    },
-    fire: {
-        name: 'fire',
-    },
-};
 
-const ACTIONS = [
-    'place',
-    'hide',
-    'swap',
-    'peek',
-    'challenge',
-    'boast',
-];
 
-export class Game extends Component {
-    constructor() {
-        super();
-        this.state = {
-            stones: startingStones,
-            currentAction: 'place',
-            activeStone: 'hammer',
-            playedStones: [],
-            hiddenStones: [],
-        };
-    }
+// clickStone = (stoneName) => () => {
+//     switch (currentAction) {
+//         case 'place':
+//             if (!playedStones.includes(stoneName)) this.setState({ activeStone: stoneName });
+//             break;
+//         case 'hide':
+//             if (playedStones.includes(stoneName)) this.setState(state => ({ hiddenStones: [stoneName, ...state.hiddenStones] }));
+//             break;
+//         // case 'swap':
+//         //     if (playedStones.includes(stoneName)) {
+//         //         if (!activeStone) this.setState({ activeStone: stoneName });
+//         //         else {
+//         //             const activeStoneIndex = playedStones.findIndex(name => name === activeStone);
+//         //             const swapStoneIndex = playedStones.findIndex(name => name === stoneName);
+//         //             this.setState(state => {
+//         //                 if (Math.random() > 0.5) return;
+//         //                 const { playedStones } = state;
+//         //                 const newPlayedStones = playedStones;
+//         //                 [newPlayedStones[activeStoneIndex], newPlayedStones[swapStoneIndex]] = [playedStones[swapStoneIndex], playedStones[activeStoneIndex]];
+//         //                 console.log(activeStone, stoneName, newPlayedStones, activeStoneIndex, swapStoneIndex);
+//         //                 return { playedStones: newPlayedStones }
+//         //             });
+//         //         }
+//         //     }
+//         //     break;
+//         default:
+//             break;
 
-    clickStone = (stoneName) => () => {
-        const { activeStone, currentAction, playedStones } = this.state;
-        switch (currentAction) {
-            case 'place':
-                if (!playedStones.includes(stoneName)) this.setState({ activeStone: stoneName });
-                break;
-            case 'hide':
-                if (playedStones.includes(stoneName)) this.setState(state => ({ hiddenStones: [stoneName, ...state.hiddenStones] }));
-                break;
-            case 'swap':
-                if (playedStones.includes(stoneName)) {
-                    if (!activeStone) this.setState({ activeStone: stoneName });
-                    else {
-                        const activeStoneIndex = playedStones.findIndex(name => name === activeStone);
-                        const swapStoneIndex = playedStones.findIndex(name => name === stoneName);
-                        this.setState(state => {
-                            if (Math.random() > 0.5) return;
-                            const { playedStones } = state;
-                            const newPlayedStones = playedStones;
-                            [newPlayedStones[activeStoneIndex], newPlayedStones[swapStoneIndex]] = [playedStones[swapStoneIndex], playedStones[activeStoneIndex]];
-                            console.log(activeStone, stoneName, newPlayedStones, activeStoneIndex, swapStoneIndex);
-                            return { playedStones: newPlayedStones }
-                        });
-                    }
-                }
-                break;
-            default:
-                break;
+//     }
+// }
 
-        }
-    }
 
-    placeStone = (direction) => {
-        const { activeStone, currentAction, playedStones } = this.state;
-        console.log(playedStones);
-        if (activeStone && currentAction === 'place') {
-            switch (direction) {
-                case 'left':
-                    this.setState(state => ({ ...state, activeStone: null, playedStones: [activeStone, ...state.playedStones] }));
-                    break;
-                default:
-                    this.setState(state => ({ ...state, activeStone: null, playedStones: [...state.playedStones, activeStone] }));
-            }
+// const placeStone = (direction) => {
+//     const { activeStone, currentAction, playedStones } = this.state;
+//     if (activeStone && currentAction === 'place') {
+//         switch (direction) {
+//             case 'left':
+//                 this.setState(state => ({ ...state, activeStone: null, playedStones: [activeStone, ...state.playedStones] }));
+//                 break;
+//             default:
+//                 this.setState(state => ({ ...state, activeStone: null, playedStones: [...state.playedStones, activeStone] }));
+//         }
 
-        }
-    }
+//     }
+// }
 
-    setAction = (action) => {
-        this.setState({ currentAction: action, activeStone: null });
-    }
+// const renderMat = () => {
+//     const { activeStone, stones, playedStones, hiddenStones } = this.state;
 
-    renderMat() {
-        const { activeStone, stones, playedStones, hiddenStones } = this.state;
+//     const matStones = playedStones.map(stoneName => {
+//         const stone = stones[stoneName];
+//         return ({ ...stone, isActive: stone.name === activeStone, isHidden: hiddenStones.includes(stone.name), setActive: this.clickStone(stone.name) })
+//     });
 
-        const matStones = playedStones.map(stoneName => {
-            const stone = stones[stoneName];
-            return ({ ...stone, isActive: stone.name === activeStone, isHidden: hiddenStones.includes(stone.name), setActive: this.clickStone(stone.name) })
-        });
+//     return;
+// }
 
-        return <Mat stones={matStones} placeStone={this.placeStone} />;
-    }
+// const renderPool = () => {
+//     const { activeStone, stones, playedStones } = this.state;
+//     const poolStones = Object.values(stones).filter(({ name }) => !playedStones.includes(name))
+//         .map(stone => ({ ...stone, isActive: stone.name === activeStone, setActive: this.clickStone(stone.name) }));
+//     console.log(poolStones);
+//     return;
+// }
 
-    renderPool() {
-        const { activeStone, stones, playedStones } = this.state;
-        const poolStones = Object.values(stones).filter(({ name }) => !playedStones.includes(name))
-            .map(stone => ({ ...stone, isActive: stone.name === activeStone, setActive: this.clickStone(stone.name) }));
-        console.log(poolStones);
-        return <Pool stones={poolStones} />;
-    }
+export const Game = () => {
+    const [action, setAction] = useState(ACTIONS.PLACE);
+    const [activeStone, setActiveStone] = useState(STONES.HAMMER);
+    const [stoneState, setStoneState] = useState(INITIAL_STONE_STATE);
 
-    renderActions() {
-        return <ActionsList setAction={this.setAction} possibleActions={ACTIONS} />;
-    }
-
-    render() {
-        console.log(this.state);
-        return (
-            <div style={style}>
-                {this.renderMat()}
-                {this.renderActions()}
-                {this.renderPool()}
-            </div>
-        );
-    }
+    return (
+        <div style={style}>
+            <Mat stoneState={stoneState} placeStone={() => { }} />
+            <ActionsList setAction={action => { setAction(action); setActiveStone(null); }} possibleActions={[]} />
+            <Pool stoneState={stoneState} />
+        </div>
+    );
 }

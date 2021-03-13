@@ -1,5 +1,6 @@
 import React from 'react';
 import { Stone } from '.';
+import { STONES } from '../../constants';
 
 const style = {
     background: 'blue',
@@ -13,9 +14,11 @@ const style = {
 };
 
 
-export const Mat = ({ stones, placeStone }) => {
+export const Mat = ({ stoneState, placeStone }) => {
+    const stones = Object.values(STONES);
+    const matStones = stones.filter(stone => stoneState[stone]?.onMat)
     return <div style={style} onClick={() => placeStone('left')}>
-        {stones.map(stone => (
-            <Stone {...stone} />
+        {matStones.map(stone => (
+            <Stone name={stone} />
         ))}</div>;
 }

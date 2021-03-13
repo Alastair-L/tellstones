@@ -12,7 +12,7 @@ const style = {
 
 export const Pool = ({ stones }) => {
     return <div style={style}>
-        {stones.map((stone) => (
+        {[].map((stone) => (
             <Stone {...stone} />
         ))}</div>;
 }
