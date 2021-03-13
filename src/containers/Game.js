@@ -49,7 +49,7 @@ const ACTIONS = [
     'boast',
 ];
 
-class Game extends Component {
+export class Game extends Component {
     constructor() {
         super();
         this.state = {
@@ -146,6 +146,3 @@ class Game extends Component {
         );
     }
 }
-
-
-export default Game;

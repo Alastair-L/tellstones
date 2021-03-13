@@ -1,24 +1,32 @@
+import { Container, makeStyles } from '@material-ui/core';
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import { Header, Sidebar, Footer } from './components';
 import { Game } from './containers';
 
-const contentStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-};
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'block',
+    textAlign: 'center',
+    minHeight: '100vh',
+  },
+  body: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+}))
 
 function App() {
+  const classes = useStyles();
+
   return (
-    <div className="App">
-      <Header />
-      <div style={contentStyle}>
+    <Container className={classes.root} >
+      <Header style={{ height: '70px' }} />
+      <Container className={classes.body}>
         <Sidebar />
         <Game />
-      </div>
+      </Container>
       <Footer />
-    </div>
+    </Container>
   );
 }
 
