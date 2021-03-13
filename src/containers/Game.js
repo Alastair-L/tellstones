@@ -62,11 +62,26 @@ export const Game = () => {
     const [action, setAction] = useState(ACTIONS.PLACE);
     const [activeStone, setActiveStone] = useState(STONES.HAMMER);
     const [stoneState, setStoneState] = useState(INITIAL_STONE_STATE);
+    const [nextMatIndexes, setNextMatIndexes] = useState({ left: -1, right: 1 });
 
+    const onClickMat = (direction) => {
+        if (action !== ACTIONS.PLACE || !activeStone) return;
+        const nextIndex = nextMatIndexes[direction];
+        setStoneState({
+            ...stoneState,
+            [activeStone]: {
+                matIndex: nextIndex,
+            }
+        })
+        setNextMatIndexes({
+            ...nextMatIndexes,
+            [direction]: direction === 'left' ? nextIndex - 1 : nextIndex + 1
+        })
+    }
 
     return (
         <div style={style}>
-            <Mat stoneState={stoneState} placeStone={() => { setStoneState(INITIAL_STONE_STATE); }} />
+            <Mat stoneState={stoneState} onClickStone={() => { }} onClickMat={onClickMat} />
             <ActionsList selectedAction={action} setAction={action => { setAction(action); setActiveStone(null); }} possibleActions={Object.values(ACTIONS)} />
             <Pool activeStone={activeStone} stoneState={stoneState} selectStone={setActiveStone} />
         </div>
