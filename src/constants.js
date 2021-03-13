@@ -11,7 +11,15 @@ export const STONES = {
 // All stones start in the pool
 export const INITIAL_STONE_STATE = {
     [STONES.OAK]: {
-        onMat: true,
+        matIndex: 2,
+    },
+    [STONES.CHALICE]: {
+        matIndex: 1,
+        hidden: true,
+    },
+    [STONES.FIRE]: {
+        matIndex: -5,
+        hidden: true,
     }
 };
 

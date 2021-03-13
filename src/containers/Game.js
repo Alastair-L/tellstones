@@ -1,6 +1,4 @@
-import { render } from '@testing-library/react';
-import React, { Component, useState } from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { useState } from 'react';
 import { ActionsList, Mat, Pool } from '../components';
 import { ACTIONS, INITIAL_STONE_STATE, STONES } from '../constants';
 
@@ -53,35 +51,11 @@ const style = {
 
 // const placeStone = (direction) => {
 //     const { activeStone, currentAction, playedStones } = this.state;
-//     if (activeStone && currentAction === 'place') {
-//         switch (direction) {
-//             case 'left':
-//                 this.setState(state => ({ ...state, activeStone: null, playedStones: [activeStone, ...state.playedStones] }));
-//                 break;
-//             default:
-//                 this.setState(state => ({ ...state, activeStone: null, playedStones: [...state.playedStones, activeStone] }));
-//         }
-
+//     switch (direction) {
+//         case 'left':
+//             break;
+//         default:
 //     }
-// }
-
-// const renderMat = () => {
-//     const { activeStone, stones, playedStones, hiddenStones } = this.state;
-
-//     const matStones = playedStones.map(stoneName => {
-//         const stone = stones[stoneName];
-//         return ({ ...stone, isActive: stone.name === activeStone, isHidden: hiddenStones.includes(stone.name), setActive: this.clickStone(stone.name) })
-//     });
-
-//     return;
-// }
-
-// const renderPool = () => {
-//     const { activeStone, stones, playedStones } = this.state;
-//     const poolStones = Object.values(stones).filter(({ name }) => !playedStones.includes(name))
-//         .map(stone => ({ ...stone, isActive: stone.name === activeStone, setActive: this.clickStone(stone.name) }));
-//     console.log(poolStones);
-//     return;
 // }
 
 export const Game = () => {
@@ -89,11 +63,12 @@ export const Game = () => {
     const [activeStone, setActiveStone] = useState(STONES.HAMMER);
     const [stoneState, setStoneState] = useState(INITIAL_STONE_STATE);
 
+
     return (
         <div style={style}>
-            <Mat stoneState={stoneState} placeStone={() => { }} />
-            <ActionsList setAction={action => { setAction(action); setActiveStone(null); }} possibleActions={[]} />
-            <Pool stoneState={stoneState} />
+            <Mat stoneState={stoneState} placeStone={() => { setStoneState(INITIAL_STONE_STATE); }} />
+            <ActionsList selectedAction={action} setAction={action => { setAction(action); setActiveStone(null); }} possibleActions={Object.values(ACTIONS)} />
+            <Pool activeStone={activeStone} stoneState={stoneState} selectStone={setActiveStone} />
         </div>
     );
 }

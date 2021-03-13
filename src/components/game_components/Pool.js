@@ -1,5 +1,6 @@
 import React from 'react';
 import { Stone } from '.';
+import { STONES } from '../../constants';
 
 const style = {
     background: 'lightBlue',
@@ -10,9 +11,11 @@ const style = {
     justifyContent: 'spaceEvenly',
 };
 
-export const Pool = ({ stones }) => {
+export const Pool = ({ activeStone, stoneState, selectStone }) => {
+    const stones = Object.values(STONES);
+    const poolStones = stones.filter(stone => stoneState[stone]?.matIndex == null);
     return <div style={style}>
-        {[].map((stone) => (
-            <Stone {...stone} />
+        {poolStones.map((stone, i) => (
+            <Stone key={`pool_stone_${i}`} name={stone} onClick={() => selectStone(stone)} isActive={stone === activeStone} />
         ))}</div>;
 }

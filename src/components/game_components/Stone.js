@@ -1,12 +1,13 @@
 import React from 'react';
 
-export const Stone = ({ name, setActive, isActive, isHidden }) => (
+export const Stone = ({ name, onClick, isActive, isHidden }) => (
     <div style={{
         width: '100px',
         height: '100px',
         backgroundColor: isActive ? '#000' : '#fff',
         borderRadius: '50%',
-    }} onClick={setActive}>
+        zIndex: 102,
+    }} onClick={onClick}>
         <p style={{
             paddingTop: '30px',
             fontSize: '25px',
