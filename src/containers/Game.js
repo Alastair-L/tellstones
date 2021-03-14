@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { act } from 'react-dom/test-utils';
 import { ActionsList, Mat, Pool } from '../components';
 import { ACTIONS, INITIAL_STONE_STATE, STONES } from '../constants';
 
@@ -48,23 +49,13 @@ const style = {
 //     }
 // }
 
-
-// const placeStone = (direction) => {
-//     const { activeStone, currentAction, playedStones } = this.state;
-//     switch (direction) {
-//         case 'left':
-//             break;
-//         default:
-//     }
-// }
-
-export const Game = () => {
+export const Game = ({ openModal }) => {
     const [action, setAction] = useState(ACTIONS.PLACE);
     const [activeStone, setActiveStone] = useState(STONES.HAMMER);
     const [stoneState, setStoneState] = useState(INITIAL_STONE_STATE);
-    const [nextMatIndexes, setNextMatIndexes] = useState({ left: -1, right: 1 });
+    const [nextMatIndexes, setNextMatIndexes] = useState({ left: -100, right: 100 });
 
-    const onClickMat = (direction) => {
+    const onClickMat = direction => {
         if (action !== ACTIONS.PLACE || !activeStone) return;
         const nextIndex = nextMatIndexes[direction];
         setStoneState({
@@ -72,18 +63,57 @@ export const Game = () => {
             [activeStone]: {
                 matIndex: nextIndex,
             }
-        })
+        });
         setNextMatIndexes({
             ...nextMatIndexes,
             [direction]: direction === 'left' ? nextIndex - 1 : nextIndex + 1
-        })
+        });
+        setActiveStone(null);
+    }
+
+    const onClickMatStone = stone => {
+        switch (action) {
+            case ACTIONS.SWAP: {
+                if (activeStone) {
+                    console.log(stoneState);
+                    setStoneState({
+                        ...stoneState,
+                        [activeStone]: {
+                            ...stoneState[activeStone],
+                            matIndex: stoneState[stone].matIndex,
+                        },
+                        [stone]: {
+                            ...stoneState[stone],
+                            matIndex: stoneState[activeStone].matIndex,
+                        }
+                    });
+                    setActiveStone(null);
+                    break;
+                }
+                setActiveStone(stone);
+                break;
+            }
+            case ACTIONS.PEEK:
+                openModal(stone);
+                break;
+            case ACTIONS.HIDE:
+                setStoneState({ ...stoneState, [stone]: { ...stoneState[stone], hidden: true } })
+                break;
+            case ACTIONS.PLACE: // Fall through
+            default: return;
+        }
+    }
+
+    const onClickPoolStone = stone => {
+        if (action !== ACTIONS.PLACE) return;
+        setActiveStone(stone);
     }
 
     return (
         <div style={style}>
-            <Mat stoneState={stoneState} onClickStone={() => { }} onClickMat={onClickMat} />
+            <Mat stoneState={stoneState} activeStone={activeStone} onClickStone={onClickMatStone} onClickMat={onClickMat} />
             <ActionsList selectedAction={action} setAction={action => { setAction(action); setActiveStone(null); }} possibleActions={Object.values(ACTIONS)} />
-            <Pool activeStone={activeStone} stoneState={stoneState} selectStone={setActiveStone} />
+            <Pool activeStone={activeStone} stoneState={stoneState} selectStone={onClickPoolStone} />
         </div>
     );
 }
